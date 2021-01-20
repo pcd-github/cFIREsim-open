@@ -120,6 +120,9 @@ var Simulation = {
 			$('#saveSimPopup').modal('hide');
 		});
 	},
+	showParams: function (form) {
+		return SpendingModule[form.spending.method].showParams(form, this);
+	},
 	runSimulation: function(form) {
 		this.tabs++;
 		console.log("Form Data:", form);
@@ -187,7 +190,7 @@ var Simulation = {
 			this.displayGraph(this.sim, form);
 
 			//Initialize statistics calculations
-			StatsModule.init(this.sim, form);
+			StatsModule.init(this, this.sim, form);
 
 		} else {
 			this.calcInvestigation(this.sim, form);

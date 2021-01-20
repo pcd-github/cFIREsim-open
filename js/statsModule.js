@@ -11,9 +11,10 @@ The "sim" parameter for each function is a multi-dimensional array of the simula
 */
 
 var StatsModule = {
-    init: function(sim, form) {
+    init: function(sc, sim, form) {
 		this.finalStats =  {
-			"successRate": null,
+            "spendParams": null,
+            "successRate": null,
 				"failures": null,
 					"avgPortfolioAtRetirement": null,
 						"average": {
@@ -95,7 +96,7 @@ var StatsModule = {
 																		},
 																			"individualDips": []
 		};
-        this.calcGeneralStats(sim, form);
+        this.calcGeneralStats(sc, sim, form);
         this.calcWithdrawalAnalysis(sim, form);
         this.calcDipAnalysis(sim);
         console.log("Final Stats: ", this.finalStats);
@@ -112,13 +113,15 @@ var StatsModule = {
 			}
 			return rawData;
 		}
-		//First Table - Success Rates
+        //First Table - Success Rates
 		var dataSet1a = [
-			[Math.round(100*this.finalStats.successRate)/100 + "%", accounting.formatMoney(this.finalStats.avgPortfolioAtRetirement, "$", 2)]
+            [ this.finalStats.spendParams, 
+                Math.round(100*this.finalStats.successRate)/100 + "%", accounting.formatMoney(this.finalStats.avgPortfolioAtRetirement, "$", 2)]
 		];
         $('#stats'+Simulation.tabs+"a").DataTable( {
 			data: dataSet1a,
 			columns: [
+                { title: "Spend Params", className: "text-left" },
 				{ title: "Success Rate", className: "text-right" },
 				{ title: "Avg. Portfolio at Retirement", className: "text-right" },
 			],
@@ -269,7 +272,7 @@ var StatsModule = {
     min: function(values) {
         return Math.min.apply(null, values);
     },
-    calcGeneralStats: function(sim, form) {
+    calcGeneralStats: function(sc, sim, form) {
         //Initialize arrays for storing values from sim container
         var endingPortfolios = [],
             yearlyWithdrawals = [],
@@ -336,6 +339,7 @@ var StatsModule = {
                 }
             }
         }
+        StatsModule.finalStats.spendParams = sc.showParams(form);
         StatsModule.finalStats.successRate = (1-(totalFailures/sim.length))*100;
         StatsModule.finalStats.failures = totalFailures;
 

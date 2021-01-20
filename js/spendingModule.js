@@ -16,6 +16,12 @@ var SpendingModule = {
     "inflationAdjusted": {
         calcSpending: function(form, sim, i, j) {
             return (form.spending.initial * sim[i][j].cumulativeInflation);
+        },
+        showParams : function(form, sim) {
+            return ("Inflation Adjusted : " + form.spending.initial + "<br/>" +
+                SpendingModule.showSSParams(form) +
+                SpendingModule.showLimitParams(form)
+            );
         }
     },
     "notInflationAdjusted": {
@@ -23,6 +29,12 @@ var SpendingModule = {
             var floor = SpendingModule.calcBasicSpendingFloor(form, sim, i, j);
             var ceiling = SpendingModule.calcBasicSpendingCeiling(form, sim, i, j);
             return Math.min(ceiling, Math.max(floor, form.spending.initial));
+        },
+        showParams : function(form, sim) {
+            return ("Not Inflation Adjusted"  + form.spending.initial + "<br/>" +
+            SpendingModule.showSSParams(form) +
+            SpendingModule.showLimitParams(form)
+            );            
         }
     },
     "hebelerAutopilot": {
@@ -40,6 +52,9 @@ var SpendingModule = {
             var baseSpending = (((form.spending.initial * sim[i][j].cumulativeInflation * cpiWeight) + (rmdPortfolio * rmdWeight)));
             return Math.min(ceiling, Math.max(floor, baseSpending));
         },
+        showParams : function(form, sim) {
+            return ("Hebeler Autopilot");
+        }
     },
     "variableSpending": {
         calcSpending: function(form, sim, i, j) {
@@ -57,6 +72,9 @@ var SpendingModule = {
                 return Math.min(ceiling, Math.max(floor, spending));
             }
             return 0;
+        },
+        showParams : function(form, sim) {
+            return ("Variable Spending");            
         }
     },
     "percentOfPortfolio": {
@@ -88,6 +106,9 @@ var SpendingModule = {
             spending = Math.min(ceiling, Math.max(floor, baseSpending))
 
             return spending;
+        },
+        showParams : function(form, sim) {
+            return("pct of portfolio");
         }
     },
     "guytonKlinger": {
@@ -122,6 +143,9 @@ var SpendingModule = {
                 return Math.min(sim[i][j-1].spending * (1 + raise) * currentYearInflation, ceiling);
             }
             return sim[i][j-1].spending * currentYearInflation;
+        },
+        showParams : function(form, sim) {
+            return("guytonKlinger");            
         }
     },
     "vpw": {
@@ -136,6 +160,9 @@ var SpendingModule = {
             var cappedSpending = Math.min(Math.max(uncappedSpending, floor), ceiling);
 
             return Math.min(Math.max(uncappedSpending, floor), ceiling);
+        },
+        showParams : function(form, sim) {
+            return("vpw");                        
         }
     },
     "variableCAPE": {
@@ -153,6 +180,9 @@ var SpendingModule = {
             var spending = sim[i][j].portfolio.start * spendingRate
 
             return Math.max(Math.min(sim[i][j].portfolio.start * spendingRate, ceiling), floor);
+        },
+        showParams : function(form, sim) {
+            return("variableCAPE");                                    
         }
     },
     calcBasicSpendingFloor: function(form, sim, i, j) {
@@ -168,5 +198,17 @@ var SpendingModule = {
     },
     calcPayment: function(rate, nper, pv, fv) {
         return -(rate * (pv * Math.pow(1 + rate, nper) + fv)) / ((Math.pow(1 + rate, nper) - 1) * (1 + rate));
-    }
+    },
+    showSSParams(form) {
+        return ("SS start : " + 
+            form.extraIncome.socialSecurity.startYear  + "<br/>" +
+            "SS $$ : " +
+            form.extraIncome.socialSecurity.val + "<br/>"
+        );
+    },
+    showLimitParams: function(form) {
+        return ("floor: " + form.spending.floorValue + "<br/>" +
+            "ceiling: " + form.spending.ceilingValue + "<br/>"
+        );
+    },
 };
