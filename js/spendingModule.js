@@ -19,9 +19,9 @@ var SpendingModule = {
         },
         showParams : function(form, sim) {
             return ("Inflation Adjusted : " + form.spending.initial + "<br/>" +
-                SpendingModule.showSSParams(form) +
-                SpendingModule.showLimitParams(form)
-            );
+                SpendingModule.showLimitParams(form) +
+                SpendingModule.showSSParams(form)
+        );
         }
     },
     "notInflationAdjusted": {
@@ -32,8 +32,8 @@ var SpendingModule = {
         },
         showParams : function(form, sim) {
             return ("Not Inflation Adjusted"  + form.spending.initial + "<br/>" +
-            SpendingModule.showSSParams(form) +
-            SpendingModule.showLimitParams(form)
+                SpendingModule.showLimitParams(form) +
+                SpendingModule.showSSParams(form)
             );            
         }
     },
@@ -53,7 +53,9 @@ var SpendingModule = {
             return Math.min(ceiling, Math.max(floor, baseSpending));
         },
         showParams : function(form, sim) {
-            return ("Hebeler Autopilot");
+            return ("Hebeler Autopilot" + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );
         }
     },
     "variableSpending": {
@@ -74,7 +76,9 @@ var SpendingModule = {
             return 0;
         },
         showParams : function(form, sim) {
-            return ("Variable Spending");            
+            return ("Variable Spending" + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );            
         }
     },
     "percentOfPortfolio": {
@@ -150,7 +154,9 @@ var SpendingModule = {
             return sim[i][j-1].spending * currentYearInflation;
         },
         showParams : function(form, sim) {
-            return("guytonKlinger");            
+            return("guytonKlinger" + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );            
         }
     },
     "vpw": {
@@ -167,7 +173,9 @@ var SpendingModule = {
             return Math.min(Math.max(uncappedSpending, floor), ceiling);
         },
         showParams : function(form, sim) {
-            return("vpw");                        
+            return("vpw" + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );                        
         }
     },
     "variableCAPE": {
@@ -187,7 +195,9 @@ var SpendingModule = {
             return Math.max(Math.min(sim[i][j].portfolio.start * spendingRate, ceiling), floor);
         },
         showParams : function(form, sim) {
-            return("variableCAPE");                                    
+            return("variableCAPE" + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );                                    
         }
     },
     calcBasicSpendingFloor: function(form, sim, i, j) {
