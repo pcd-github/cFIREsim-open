@@ -108,7 +108,12 @@ var SpendingModule = {
             return spending;
         },
         showParams : function(form, sim) {
-            return("pct of portfolio");
+            return("pct of portfolio: " + 
+                form.spending.percentageOfPortfolioPercentage  + "<br/>" +
+                "floor: " + form.spending.percentageOfPortfolioFloorValue + "<br/>" +
+                "ceiling: " + form.spending.percentageOfPortfolioCeilingValue + "<br/>" +
+                SpendingModule.showSSParams(form)
+            );
         }
     },
     "guytonKlinger": {
