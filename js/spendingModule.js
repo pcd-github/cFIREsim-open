@@ -77,6 +77,8 @@ var SpendingModule = {
         },
         showParams : function(form, sim) {
             return ("Variable Spending" + "<br/>" +
+                "z-value: " + form.spending.variableSpendingZValue + "<br/>" +
+                SpendingModule.showLimitParams(form) +
                 SpendingModule.showSSParams(form)
             );            
         }
