@@ -18,7 +18,8 @@ var SpendingModule = {
             return (form.spending.initial * sim[i][j].cumulativeInflation);
         },
         showParams : function(form, sim) {
-            return ("Inflation Adjusted : " + form.spending.initial + "<br/>" +
+            return ("Inflation Adjusted : " + 
+                accounting.formatMoney(form.spending.initial, "$", 2) + "<br/>" +
                 SpendingModule.showLimitParams(form) +
                 SpendingModule.showSSParams(form)
         );
@@ -31,7 +32,7 @@ var SpendingModule = {
             return Math.min(ceiling, Math.max(floor, form.spending.initial));
         },
         showParams : function(form, sim) {
-            return ("Not Inflation Adjusted"  + form.spending.initial + "<br/>" +
+            return ("Not Inflation Adjusted"  + accounting.formatMoney(form.spending.initial, "$", 2) + "<br/>" +
                 SpendingModule.showLimitParams(form) +
                 SpendingModule.showSSParams(form)
             );            
@@ -77,6 +78,7 @@ var SpendingModule = {
         },
         showParams : function(form, sim) {
             return ("Variable Spending" + "<br/>" +
+                "initial: " + accounting.formatMoney(form.spending.initial, "$", 2) + "<br/>" +
                 "z-value: " + form.spending.variableSpendingZValue + "<br/>" +
                 SpendingModule.showLimitParams(form) +
                 SpendingModule.showSSParams(form)
@@ -115,9 +117,9 @@ var SpendingModule = {
         },
         showParams : function(form, sim) {
             return("pct of portfolio: " + 
-                form.spending.percentageOfPortfolioPercentage  + "<br/>" +
-                "floor: " + form.spending.percentageOfPortfolioFloorValue + "<br/>" +
-                "ceiling: " + form.spending.percentageOfPortfolioCeilingValue + "<br/>" +
+                form.spending.percentageOfPortfolioPercentage  + "%<br/>" +
+                "floor: " + accounting.formatMoney(form.spending.percentageOfPortfolioFloorValue, "$", 2) + "<br/>" +
+                "ceiling: " + accounting.formatMoney(form.spending.percentageOfPortfolioCeilingValue, "$", 2) + "<br/>" +
                 SpendingModule.showSSParams(form)
             );
         }
@@ -217,15 +219,15 @@ var SpendingModule = {
         return -(rate * (pv * Math.pow(1 + rate, nper) + fv)) / ((Math.pow(1 + rate, nper) - 1) * (1 + rate));
     },
     showSSParams(form) {
-        return ("SS start : " + 
+        return ("SS start year: " + 
             form.extraIncome.socialSecurity.startYear  + "<br/>" +
-            "SS $$ : " +
-            form.extraIncome.socialSecurity.val + "<br/>"
+            "SS earnings: " +
+            accounting.formatMoney(form.extraIncome.socialSecurity.val, "$", 2) + "<br/>"
         );
     },
     showLimitParams: function(form) {
-        return ("floor: " + form.spending.floorValue + "<br/>" +
-            "ceiling: " + form.spending.ceilingValue + "<br/>"
+        return ("floor: " + accounting.formatMoney(form.spending.floorValue, "$", 2) + "<br/>" +
+            "ceiling: " + accounting.formatMoney(form.spending.ceilingValue, "$", 2) + "<br/>"
         );
     },
 };
